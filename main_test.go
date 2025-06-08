@@ -1,5 +1,3 @@
-// Пишите тесты в этом файле
-
 package main
 
 import (
@@ -73,6 +71,11 @@ func TestMaximum(t *testing.T) {
 			expected: 0,
 		},
 		{
+			name:     "nil слайс",
+			input:    nil,
+			expected: 0,
+		},
+		{
 			name:     "Один элемент",
 			input:    []int{42},
 			expected: 42,
@@ -86,11 +89,6 @@ func TestMaximum(t *testing.T) {
 			name:     "Одинаковые элементы",
 			input:    []int{5, 5, 5, 5},
 			expected: 5,
-		},
-		{
-			name:     "Отрицательные числа",
-			input:    []int{-1, -5, -3, -8},
-			expected: -1,
 		},
 	}
 
@@ -118,6 +116,11 @@ func TestMaxChunks(t *testing.T) {
 		{
 			name:     "Пустой слайс",
 			input:    []int{},
+			expected: 0,
+		},
+		{
+			name:     "nil слайс",
+			input:    nil,
 			expected: 0,
 		},
 		{

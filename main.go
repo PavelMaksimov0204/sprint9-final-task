@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+
 )
 
 // Константы для размера слайса и количества частей
@@ -55,6 +56,10 @@ func maxChunks(data []int) int {
 	if len(data) == 1 {
 		return data[0]
 	}
+	if len(data) < CHUNKS {
+		// Если элементов меньше, чем чанков, ищем максимум обычным способом
+		return maximum(data)
+	}
 
 	// Вычисляем размер каждой части и создаем слайс для хранения максимумов
 	chunkSize := len(data) / CHUNKS
@@ -69,18 +74,13 @@ func maxChunks(data []int) int {
 		if i == CHUNKS-1 {
 			end = len(data) // Для последнего чанка берем все оставшиеся элементы
 		}
+		chunk := data[start:end] // Передаем готовый слайс
 
 		// Запускаем горутину для поиска максимума в текущей части
-		go func(chunkIndex, start, end int) {
+		go func(chunkIndex int, chunk []int) {
 			defer wg.Done()
-			chunkMax := data[start]
-			for j := start + 1; j < end; j++ {
-				if data[j] > chunkMax {
-					chunkMax = data[j]
-				}
-			}
-			maxValues[chunkIndex] = chunkMax
-		}(i, start, end)
+			maxValues[chunkIndex] = maximum(chunk)
+		}(i, chunk)
 	}
 
 	// Ждем завершения всех горутин
